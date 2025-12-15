@@ -1,0 +1,44 @@
+Spark Training questions
+Please answer the questions below
+Exercise 1
+Q1. Please put your code here:
+______________________________
+______________________________
+______________________________
+
+Q2. Add print-screen of the stage proving you have 5 tasks
+______________________________
+______________________________
+______________________________
+Exercise 2
+Q1. Please put your code here:
+______________________________
+______________________________
+______________________________
+
+Q2. Write the number of words found
+______________________________
+______________________________
+
+Exercise 3
+Put a print-scrin with the DAG of the first stage, which shows it reads the files from s3a://<your_bucket_name>
+______________________________
+______________________________
+
+Exercise 4
+Q1. Please put your code here:
+______________________________
+______________________________
+
+Q2. Put here the printout of the longest word:
+______________________________
+
+Exercise 5
+Q1. Please put your code here:
+______________________________
+______________________________
+
+Q2. Put here the printout of the line with the most words:
+______________________________
+______________________________
+
