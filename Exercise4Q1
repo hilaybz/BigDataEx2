@@ -1,0 +1,43 @@
+import sys
+from pyspark import SparkContext, SparkConf
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Usage: wordcount <input_folder>", file=sys.stderr)
+        sys.exit(-1)
+
+    conf = SparkConf().setAppName("python-word-count")
+    sc = SparkContext(conf=conf)
+
+    text_file = sc.textFile("hdfs://" + sys.argv[1])
+    words = text_file.flatMap(lambda line: line.split(" ")).cache()  # caching
+    distinct_words = words.distinct().count()
+
+    counts =  words.map(lambda word: (word, 1)) \
+             .reduceByKey(lambda a, b: a + b) \
+             .repartition(5)\
+             .filter(lambda x: len(x[0])>5)
+
+    # "takeOrdered" is an action. 
+    list = counts.takeOrdered(40, key = lambda x: -x[1])
+    print("--------------------------------------------")
+    # print (repr(list)[1:-1])
+    print(*list, sep="\n")
+    print("--------------------------------------------")
+
+    print("Total number of distinct words:", distinct_words)
+
+
+    cleaned = words.map(lambda w: w.rstrip('.,'))    # clean commas and dots
+    alpha_only = cleaned.filter(lambda w: w.isalpha() and len(w) > 0)    # keep only alpahbetics words (no - : etc)
+    
+    longest_word = alpha_only.reduce(
+        lambda a, b: a if len(a) >= len(b) else b
+    )
+
+    print("--------------------------------------------")
+    print("The longest word in the text is:")
+    print(longest_word)
+    print("Length:", len(longest_word))
+    print("--------------------------------------------")
+
